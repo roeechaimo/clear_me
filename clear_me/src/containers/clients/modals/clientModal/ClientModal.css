@@ -9,6 +9,18 @@
   cursor: pointer;
 }
 
+.client-modal-content-wrapper {
+  display: flex;
+}
+
+.client-modal-content-wrapper > div {
+  flex-basis: 50%;
+}
+
+.client-modal-title {
+  text-decoration: underline;
+}
+
 .client-prefix {
-  font-weight: 500;
+  font-weight: 700;
 }

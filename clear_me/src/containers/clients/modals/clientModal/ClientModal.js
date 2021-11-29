@@ -15,10 +15,11 @@ const customStyles = {
   content: {
     position: 'absolute',
     top: '10%',
-    left: '25%',
+    left: '22.5%',
     width: '50%',
     backgroundColor: '#ffffff',
     paddingLeft: '2%',
+    paddingRight: '2%',
     // TODO - handle this
     border: '1px solid #000000',
   },
@@ -45,6 +46,16 @@ function ClientModal(props) {
     );
   };
 
+  const renderMember = (member, index) => {
+    return (
+      <div key={member?.id || index} className="member-wrapper">
+        <p>
+          <span>{member?.name}</span>
+        </p>
+      </div>
+    );
+  };
+
   return (
     <ReactModal
       isOpen={isModalOpen}
@@ -59,7 +70,19 @@ function ClientModal(props) {
           <span onClick={() => onHide()}>X</span>
         </div>
 
-        {CLIENT_KEY_MAP.map((client, index) => renderDetails(client, index))}
+        <div className="client-modal-content-wrapper">
+          <div>
+            <h4 className="client-modal-title">Details</h4>
+
+            {CLIENT_KEY_MAP.map((client, index) => renderDetails(client, index))}
+          </div>
+
+          <div>
+            <h4 className="client-modal-title">Members</h4>
+
+            {client?.members?.map((member, index) => renderMember(member, index))}
+          </div>
+        </div>
       </div>
     </ReactModal>
   );

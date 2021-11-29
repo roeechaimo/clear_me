@@ -28,4 +28,17 @@ export default class ApiService {
         }
       );
   }
+
+  getMemebers(callback) {
+    fetch(`${this.#baseUrl}members`)
+      .then((res) => res.json())
+      .then(
+        (result) => {
+          return callback(result);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+  }
 }

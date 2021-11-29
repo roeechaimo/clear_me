@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import Services from '../../services/Services';
+import React, { useContext, useState } from 'react';
 import Table from '../../components/table/Table';
+import { AppContext } from '../../contexts/AppContext';
+import Services from '../../services/Services';
 import Client from './components/client/Client';
 import ClientModal from './modals/clientModal/ClientModal';
 
@@ -8,15 +9,10 @@ const services = new Services();
 const apiService = services.api;
 
 export default function Clients() {
-  const [clients, setClients] = useState([]);
+  const appContext = useContext(AppContext);
+
   const [clickedClient, setClickedClient] = useState(null);
   const [isClientModalOpen, setIsClientModalOpen] = useState(false);
-
-  useEffect(() => {
-    apiService.getOrganizations((result) => setClients(result));
-
-    return () => {};
-  }, []);
 
   const onClientClick = (client) => {
     return apiService.getOrganizationDetails(client?.id, (result) => onOrganizationDetailsSuccess(result));
@@ -26,7 +22,9 @@ export default function Clients() {
     if (client) {
       setIsClientModalOpen(true);
 
-      return setClickedClient(client);
+      const filteredMembers = filterMembersByOrganizationId(client?.id);
+
+      return setClickedClient({ ...client, members: filteredMembers });
     }
   };
 
@@ -36,9 +34,15 @@ export default function Clients() {
     return setClickedClient(null);
   };
 
+  const filterMembersByOrganizationId = (organizationId) => {
+    return appContext?.filterMembersByOrganizationId(organizationId);
+  };
+
   return (
     <main>
       <ClientModal isModalOpen={isClientModalOpen} client={clickedClient} onModalHide={() => onClientModalHide()} />
+
+      <h3>Organizations</h3>
 
       <Table>
         <thead>
@@ -52,7 +56,7 @@ export default function Clients() {
         </thead>
 
         <tbody>
-          {clients?.map((client) => (
+          {appContext?.appState?.organizations?.map((client) => (
             <Client key={client?.id} client={client} onClientClick={(client) => onClientClick(client)} />
           ))}
         </tbody>
