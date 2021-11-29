@@ -1,0 +1,14 @@
+.close-button {
+  padding-top: 2%;
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 2%;
+}
+
+.close-button span {
+  cursor: pointer;
+}
+
+.client-prefix {
+  font-weight: 500;
+}

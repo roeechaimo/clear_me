@@ -1,6 +1,6 @@
 export default function Client({ client = {}, onClientClick = null }) {
   return (
-    <tr onClick={onClientClick}>
+    <tr onClick={() => onClientClick(client)}>
       <td>{client?.name}</td>
 
       <td>{client?.headcount}</td>
