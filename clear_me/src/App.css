@@ -4,4 +4,25 @@ main {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  overflow: scroll;
+}
+
+.button {
+  margin: 1%;
+}
+
+.button span {
+  padding: 5px;
+  border: 1px solid #000000;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.button a {
+  color: #000000;
+  text-decoration: none;
+}
+
+.error {
+  color: #cd5c5c;
 }

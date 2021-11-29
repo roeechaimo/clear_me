@@ -20,8 +20,8 @@ const customStyles = {
     backgroundColor: '#ffffff',
     paddingLeft: '2%',
     paddingRight: '2%',
-    // TODO - handle this
     border: '1px solid #000000',
+    borderRadius: '5px',
   },
 };
 

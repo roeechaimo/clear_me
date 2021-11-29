@@ -4,6 +4,8 @@ import { AppContext } from '../../contexts/AppContext';
 import Services from '../../services/Services';
 import Client from './components/client/Client';
 import ClientModal from './modals/clientModal/ClientModal';
+import './Clinets.css';
+import { Link } from 'react-router-dom';
 
 const services = new Services();
 const apiService = services.api;
@@ -43,6 +45,12 @@ export default function Clients() {
       <ClientModal isModalOpen={isClientModalOpen} client={clickedClient} onModalHide={() => onClientModalHide()} />
 
       <h3>Organizations</h3>
+
+      <div className="button">
+        <Link to="/map">
+          <span>To map view</span>
+        </Link>
+      </div>
 
       <Table>
         <thead>

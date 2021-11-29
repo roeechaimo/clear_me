@@ -1,7 +1,9 @@
+import Validations from '../validations/Validations';
 import ApiService from './ApiService';
 
 export default class Services {
   api;
+  validations;
 
   constructor() {
     this.init();
@@ -9,5 +11,6 @@ export default class Services {
 
   init() {
     this.api = new ApiService();
+    this.validations = new Validations();
   }
 }
