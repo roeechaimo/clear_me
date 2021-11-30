@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState, useCallback } from 'react';
+import BackButton from '../../components/backButton/BackButton';
 import Table from '../../components/table/Table';
 import { AppContext } from '../../contexts/AppContext';
 import Manager from './components/manager/Manager';
@@ -36,6 +37,8 @@ export default function Managers() {
 
   return (
     <main>
+      <BackButton />
+
       <h3>Managers</h3>
 
       <Table>

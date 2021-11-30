@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { ComposableMap, Geographies, Geography, Marker, ZoomableGroup } from 'react-simple-maps';
+import BackButton from '../../components/backButton/BackButton';
 import { AppContext } from '../../contexts/AppContext';
 import Services from '../../services/Services';
 import './Map.css';
@@ -95,6 +96,8 @@ export default function Map() {
 
   return (
     <main>
+      <BackButton />
+
       <h3>Map</h3>
 
       {!!coordinates?.invalid?.length && (

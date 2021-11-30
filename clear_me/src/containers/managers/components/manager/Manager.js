@@ -1,6 +1,6 @@
 export default function Manager({ manager = {} }) {
   return (
-    <tr>
+    <tr className="manager-row">
       <td>{manager?.name}</td>
 
       <td>{manager?.organizationName}</td>

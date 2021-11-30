@@ -44,8 +44,6 @@ export default function Clients() {
     <main>
       <ClientModal isModalOpen={isClientModalOpen} client={clickedClient} onModalHide={() => onClientModalHide()} />
 
-      <h3>Organizations</h3>
-
       <div className="nav-wrapper">
         <div className="button">
           <Link to="/map">
@@ -59,6 +57,8 @@ export default function Clients() {
           </Link>
         </div>
       </div>
+
+      <h3>Organizations</h3>
 
       <Table>
         <thead>

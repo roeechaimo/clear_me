@@ -1,7 +1,6 @@
 .nav-wrapper {
   display: flex;
-  width: 100%;
-  justify-content: center;
+  width: 75%;  
 }
 
 table > tbody > tr > td {
