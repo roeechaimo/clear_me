@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
 import Clients from './containers/clients/Clinets';
+import Managers from './containers/managers/Managers';
 import Map from './containers/map/Map';
 import { AppContext } from './contexts/AppContext';
 import Services from './services/Services';
@@ -47,6 +48,8 @@ function App() {
           <Route path="/" element={<Clients />}></Route>
 
           <Route path="map" element={<Map />}></Route>
+
+          <Route path="managers" element={<Managers />}></Route>
         </Routes>
       </BrowserRouter>
     </AppContext.Provider>

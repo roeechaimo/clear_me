@@ -46,10 +46,18 @@ export default function Clients() {
 
       <h3>Organizations</h3>
 
-      <div className="button">
-        <Link to="/map">
-          <span>To map view</span>
-        </Link>
+      <div className="nav-wrapper">
+        <div className="button">
+          <Link to="/map">
+            <span>To map view</span>
+          </Link>
+        </div>
+
+        <div className="button">
+          <Link to="/managers">
+            <span>To managers view</span>
+          </Link>
+        </div>
       </div>
 
       <Table>

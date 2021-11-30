@@ -1,3 +1,9 @@
+.nav-wrapper {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
 table > tbody > tr > td {
   cursor: pointer;
 }
