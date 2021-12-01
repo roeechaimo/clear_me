@@ -1,0 +1,14 @@
+form.member-form {
+  width: 75%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+form.member-form > input {
+  margin-bottom: 2%;
+}
+
+p.error {
+  font-size: 12px;
+}

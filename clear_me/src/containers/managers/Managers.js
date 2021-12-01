@@ -11,7 +11,7 @@ export default function Managers() {
   const [managers, setManagers] = useState([]);
 
   const filterManagers = useCallback(() => {
-    const { organizations, members } = appContext?.appState;
+    const { organizations, members } = appContext?.appState?.data;
     const managers = members
       ?.filter((member) => member?.title?.toLowerCase() === 'manager')
       ?.map((manager) => {
@@ -20,20 +20,20 @@ export default function Managers() {
         );
         let organizationName = '-';
         if (organization) {
-          return { ...manager, organizationName: organization?.name };
+          return { ...manager, organizationName: organization?.name, existingClient: 'Yes' };
         }
 
-        return { ...manager, organizationName };
+        return { ...manager, organizationName, existingClient: 'No' };
       });
 
     setManagers(managers);
-  }, [appContext?.appState?.members]);
+  }, [appContext?.appState?.data?.members]);
 
   useEffect(() => {
     filterManagers();
 
     return () => {};
-  }, [appContext?.appState?.members]);
+  }, [appContext?.appState?.data?.members]);
 
   return (
     <main>
@@ -49,6 +49,8 @@ export default function Managers() {
             <td>Company name</td>
 
             <td>Phone number</td>
+
+            <td>Existing Client</td>
           </tr>
         </thead>
 

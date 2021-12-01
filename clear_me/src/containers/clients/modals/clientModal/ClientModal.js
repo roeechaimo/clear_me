@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactModal from 'react-modal';
+import AppButton from '../../../../components/appButton/AppButton';
 import './ClientModal.css';
 
 const CLIENT_KEY_MAP = [
@@ -26,7 +27,7 @@ const customStyles = {
 };
 
 function ClientModal(props) {
-  const { isModalOpen, onModalHide, client = {} } = props;
+  const { isModalOpen, onModalHide, onEditMember, client = {} } = props;
 
   const onHide = () => {
     return typeof onModalHide === 'function' && onModalHide();
@@ -46,12 +47,18 @@ function ClientModal(props) {
     );
   };
 
+  const onMemberClick = (member) => {
+    return typeof onEditMember === 'function' && onEditMember(member);
+  };
+
   const renderMember = (member, index) => {
     return (
       <div key={member?.id || index} className="member-wrapper">
-        <p>
+        <div>
           <span>{member?.name}</span>
-        </p>
+
+          <AppButton onButtonClick={() => onMemberClick(member)} buttonText={'Edit'} />
+        </div>
       </div>
     );
   };

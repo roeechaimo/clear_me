@@ -1,13 +1,12 @@
 import { useNavigate } from 'react-router-dom';
+import AppButton from '../appButton/AppButton';
 
-export default function BackButton({}) {
+export default function BackButton() {
   const navigate = useNavigate();
 
   return (
     <div className="nav-wrapper">
-      <div className="button">
-        <span onClick={() => navigate(-1)}>Back</span>
-      </div>
+      <AppButton onButtonClick={() => navigate(-1)} buttonText={'Back'} />
     </div>
   );
 }

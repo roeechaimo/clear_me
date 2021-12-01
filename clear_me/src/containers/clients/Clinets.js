@@ -1,17 +1,20 @@
 import React, { useContext, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import AppButton from '../../components/appButton/AppButton';
 import Table from '../../components/table/Table';
 import { AppContext } from '../../contexts/AppContext';
 import Services from '../../services/Services';
+import './Clinets.css';
 import Client from './components/client/Client';
 import ClientModal from './modals/clientModal/ClientModal';
-import './Clinets.css';
-import { Link } from 'react-router-dom';
 
 const services = new Services();
 const apiService = services.api;
 
 export default function Clients() {
   const appContext = useContext(AppContext);
+
+  const navigate = useNavigate();
 
   const [clickedClient, setClickedClient] = useState(null);
   const [isClientModalOpen, setIsClientModalOpen] = useState(false);
@@ -36,26 +39,29 @@ export default function Clients() {
     return setClickedClient(null);
   };
 
+  const navigateToMemberFormPage = (member) => {
+    setIsClientModalOpen(false);
+
+    return navigate(`/member_form/${member?.id}`);
+  };
+
   const filterMembersByOrganizationId = (organizationId) => {
     return appContext?.filterMembersByOrganizationId(organizationId);
   };
 
   return (
     <main>
-      <ClientModal isModalOpen={isClientModalOpen} client={clickedClient} onModalHide={() => onClientModalHide()} />
+      <ClientModal
+        isModalOpen={isClientModalOpen}
+        client={clickedClient}
+        onModalHide={() => onClientModalHide()}
+        onEditMember={navigateToMemberFormPage}
+      />
 
       <div className="nav-wrapper">
-        <div className="button">
-          <Link to="/map">
-            <span>To map view</span>
-          </Link>
-        </div>
+        <AppButton onButtonClick={() => navigate('/map')} buttonText={'To map view'} />
 
-        <div className="button">
-          <Link to="/managers">
-            <span>To managers view</span>
-          </Link>
-        </div>
+        <AppButton onButtonClick={() => navigate('/managers')} buttonText={'To managers view'} />
       </div>
 
       <h3>Organizations</h3>
@@ -72,7 +78,7 @@ export default function Clients() {
         </thead>
 
         <tbody>
-          {appContext?.appState?.organizations?.map((client) => (
+          {appContext?.appState?.data?.organizations?.map((client) => (
             <Client key={client?.id} client={client} onClientClick={(client) => onClientClick(client)} />
           ))}
         </tbody>

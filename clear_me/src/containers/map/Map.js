@@ -23,7 +23,7 @@ export default function Map() {
   const getOrganizationsCoordinates = () => {
     let locations = [];
     let invalid = [];
-    const organizations = appContext?.appState?.organizations;
+    const organizations = appContext?.appState?.data?.organizations;
     organizations?.forEach((org) => {
       if (org?.city && org?.state && org?.address_1) {
         let location = { city: org?.city, state: org?.state, address: org?.address_1 };
@@ -92,7 +92,7 @@ export default function Map() {
     getOrganizationsCoordinates();
 
     return () => {};
-  }, [appContext?.appState?.organizations]);
+  }, [appContext?.appState?.data?.organizations]);
 
   return (
     <main>

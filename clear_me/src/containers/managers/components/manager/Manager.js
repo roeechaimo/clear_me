@@ -6,6 +6,8 @@ export default function Manager({ manager = {} }) {
       <td>{manager?.organizationName}</td>
 
       <td>{manager?.phone_number}</td>
+
+      <td>{manager?.existingClient}</td>
     </tr>
   );
 }
