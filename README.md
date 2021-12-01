@@ -5,3 +5,6 @@ take home exercise
 2. Run `cd {your folder}`.
 3. Run `npm install`.
 4. Run `npm start` and the app will launch automatically on your default browser.
+
+
+You can watch the app running here - [https://clear-me-d65aa.web.app/]
