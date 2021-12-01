@@ -4,7 +4,8 @@ main {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  overflow: scroll;
+  overflow: auto;
+  margin-bottom: 2%;
 }
 
 .button {
