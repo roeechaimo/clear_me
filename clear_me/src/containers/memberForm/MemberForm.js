@@ -77,6 +77,8 @@ export default function MemberForm() {
       <h3>{`Member form ${member?.name ? `- ${member?.name}` : ''}`}</h3>
 
       <form className="member-form">
+        <label>Organization id</label>
+        
         <input type="text" placeholder="Organization id" value={inputValue} onChange={onInputValueChange} />
 
         <AppButton onButtonClick={() => onSubmit()} buttonText={'Submit update'} />

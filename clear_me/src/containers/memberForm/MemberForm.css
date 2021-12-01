@@ -9,6 +9,11 @@ form.member-form > input {
   margin-bottom: 2%;
 }
 
+form.member-form > label {
+  font-size: 10px;
+  margin-bottom: 3px;
+}
+
 p.error {
   font-size: 12px;
 }
