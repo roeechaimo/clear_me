@@ -1,10 +1,11 @@
 import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AppButton from '../../components/appButton/AppButton';
+import PageWrapper from '../../components/pageWrapper/PageWrapper';
 import Table from '../../components/table/Table';
 import { AppContext } from '../../contexts/AppContext';
 import Services from '../../services/Services';
-import './Clinets.css';
+import NavWrapper from '../../styles/navWrapper/NavWrapper';
 import Client from './components/client/Client';
 import ClientModal from './modals/clientModal/ClientModal';
 
@@ -50,7 +51,7 @@ export default function Clients() {
   };
 
   return (
-    <main>
+    <PageWrapper>
       <ClientModal
         isModalOpen={isClientModalOpen}
         client={clickedClient}
@@ -58,15 +59,15 @@ export default function Clients() {
         onEditMember={navigateToMemberFormPage}
       />
 
-      <div className="nav-wrapper">
+      <NavWrapper>
         <AppButton onButtonClick={() => navigate('/map')} buttonText={'To map view'} />
 
         <AppButton onButtonClick={() => navigate('/managers')} buttonText={'To managers view'} />
-      </div>
+      </NavWrapper>
 
       <h3>Organizations</h3>
 
-      <Table>
+      <Table cursor={'pointer'}>
         <thead>
           <tr>
             <td>Name</td>
@@ -83,6 +84,6 @@ export default function Clients() {
           ))}
         </tbody>
       </Table>
-    </main>
+    </PageWrapper>
   );
 }

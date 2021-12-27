@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState, useCallback } from 'react';
 import BackButton from '../../components/backButton/BackButton';
+import PageWrapper from '../../components/pageWrapper/PageWrapper';
 import Table from '../../components/table/Table';
 import { AppContext } from '../../contexts/AppContext';
 import Manager from './components/manager/Manager';
-import './Managers.css';
 
 export default function Managers() {
   const appContext = useContext(AppContext);
@@ -36,7 +36,7 @@ export default function Managers() {
   }, [appContext?.appState?.data?.members]);
 
   return (
-    <main>
+    <PageWrapper>
       <BackButton />
 
       <h3>Managers</h3>
@@ -60,6 +60,6 @@ export default function Managers() {
           ))}
         </tbody>
       </Table>
-    </main>
+    </PageWrapper>
   );
 }

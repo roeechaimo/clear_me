@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactModal from 'react-modal';
+import styled from 'styled-components';
 import AppButton from '../../../../components/appButton/AppButton';
-import './ClientModal.css';
 
 const CLIENT_KEY_MAP = [
   { value: 'name', prefix: 'Name: ' },
@@ -26,6 +26,51 @@ const customStyles = {
   },
 };
 
+const memberButtonStyle = {
+  ['paddingBottom']: '0',
+  ['paddingTop']: '0',
+};
+
+const CloseButtonWrapper = styled.div`
+  padding-top: 2%;
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 2%;
+`;
+
+const CloseButton = styled.span`
+  cursor: pointer;
+`;
+
+const ContentWrapper = styled.div`
+  display: flex;
+`;
+
+const ContentSection = styled.div`
+  flex-basis: 50%;
+`;
+
+const MembersSection = styled(ContentSection)`
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+`;
+
+const ModalTitle = styled.h4`
+  text-decoration: underline;
+`;
+
+const Member = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const Prefix = styled.span`
+  font-weight: 700;
+`;
+
 function ClientModal(props) {
   const { isModalOpen, onModalHide, onEditMember, client = {} } = props;
 
@@ -35,10 +80,10 @@ function ClientModal(props) {
 
   const renderDetails = (clientDetails, index) => {
     return (
-      <div key={clientDetails?.prefix || index} className="details-wrapper">
+      <div key={clientDetails?.prefix || index}>
         {client && !!client[clientDetails?.value] && (
           <p>
-            <span className="client-prefix">{clientDetails?.prefix}</span>
+            <Prefix>{clientDetails?.prefix}</Prefix>
 
             <span>{client[clientDetails?.value]}</span>
           </p>
@@ -53,12 +98,12 @@ function ClientModal(props) {
 
   const renderMember = (member, index) => {
     return (
-      <div key={member?.id || index} className="member-wrapper">
-        <div>
+      <div key={member?.id || index}>
+        <Member>
           <span>{member?.name}</span>
 
-          <AppButton onButtonClick={() => onMemberClick(member)} buttonText={'Edit'} />
-        </div>
+          <AppButton onButtonClick={() => onMemberClick(member)} buttonText={'Edit'} style={memberButtonStyle} />
+        </Member>
       </div>
     );
   };
@@ -73,23 +118,23 @@ function ClientModal(props) {
       className="app-modal"
     >
       <div>
-        <div className="close-button">
-          <span onClick={() => onHide()}>X</span>
-        </div>
+        <CloseButtonWrapper>
+          <CloseButton onClick={() => onHide()}>X</CloseButton>
+        </CloseButtonWrapper>
 
-        <div className="client-modal-content-wrapper">
-          <div>
-            <h4 className="client-modal-title">Details</h4>
+        <ContentWrapper>
+          <ContentSection>
+            <ModalTitle>Details</ModalTitle>
 
             {CLIENT_KEY_MAP.map((client, index) => renderDetails(client, index))}
-          </div>
+          </ContentSection>
 
-          <div>
-            <h4 className="client-modal-title">Members</h4>
+          <MembersSection>
+            <ModalTitle>Members</ModalTitle>
 
             {client?.members?.map((member, index) => renderMember(member, index))}
-          </div>
-        </div>
+          </MembersSection>
+        </ContentWrapper>
       </div>
     </ReactModal>
   );

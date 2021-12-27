@@ -1,9 +1,11 @@
 import { useContext, useEffect, useState } from 'react';
 import { ComposableMap, Geographies, Geography, Marker, ZoomableGroup } from 'react-simple-maps';
 import BackButton from '../../components/backButton/BackButton';
+import PageWrapper from '../../components/pageWrapper/PageWrapper';
 import { AppContext } from '../../contexts/AppContext';
 import Services from '../../services/Services';
-import './Map.css';
+import ErrorText from '../../components/errorText/ErrorText';
+import styled from 'styled-components';
 
 const geoUrl = 'https://raw.githubusercontent.com/zcreativelabs/react-simple-maps/master/topojson-maps/world-110m.json';
 
@@ -12,6 +14,16 @@ const usCenter = [-98.5795, 39.828175];
 const services = new Services();
 const apiService = services.api;
 const validations = services.validations;
+
+const Wrapper = styled.div`
+  width: 75%;
+`;
+
+const MarkerText = styled.text`
+  font-size: 2px;
+`;
+
+const ERROR_SPAN = { 'font-size': '10px' };
 
 export default function Map() {
   const appContext = useContext(AppContext);
@@ -75,16 +87,18 @@ export default function Map() {
           <circle r={2} fill="#89CFF0" cy="3" />
         </g>
 
-        <text textAnchor="middle">{marker?.name}</text>
+        <MarkerText textAnchor="middle">{marker?.name}</MarkerText>
       </Marker>
     );
   };
 
   const renderInvalidOrg = (organization, index) => {
     return (
-      <span key={organization?.id || index} className="error">{`${organization?.name}${
-        coordinates?.invalid?.length - 1 === index ? '' : ', '
-      }`}</span>
+      <ErrorText
+        key={organization?.id || index}
+        text={`${organization?.name}${coordinates?.invalid?.length - 1 === index ? '' : ', '}`}
+        style={ERROR_SPAN}
+      />
     );
   };
 
@@ -95,20 +109,20 @@ export default function Map() {
   }, [appContext?.appState?.data?.organizations]);
 
   return (
-    <main>
+    <PageWrapper>
       <BackButton />
 
       <h3>Map</h3>
 
       {!!coordinates?.invalid?.length && (
-        <div className="invalid-locations-wrapper">
-          <p className="error">Couldn't find location for:</p>
+        <Wrapper>
+          <ErrorText isParagragh={true} text={"Couldn't find location for:"} />
 
           {coordinates?.invalid?.map((org, index) => renderInvalidOrg(org, index))}
-        </div>
+        </Wrapper>
       )}
 
-      <div className="map-wrapper">
+      <Wrapper>
         <ComposableMap>
           <ZoomableGroup center={usCenter} zoom={3}>
             <Geographies geography={geoUrl}>
@@ -120,7 +134,7 @@ export default function Map() {
             {coordinates?.valid?.map((item, index) => renderMarker(item, index))}
           </ZoomableGroup>
         </ComposableMap>
-      </div>
-    </main>
+      </Wrapper>
+    </PageWrapper>
   );
 }

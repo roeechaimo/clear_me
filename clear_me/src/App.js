@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import './App.css';
 import Clients from './containers/clients/Clinets';
 import Managers from './containers/managers/Managers';
 import Map from './containers/map/Map';
@@ -9,9 +8,13 @@ import { AppContext } from './contexts/AppContext';
 import Services from './services/Services';
 import { toast } from 'react-toastify';
 import Toast from './components/toast/Toast';
+import THEME from './styles/theme';
+import {ThemeProvider} from 'styled-components';
 
 const services = new Services();
 const apiService = services.api;
+
+const theme = THEME;
 
 function App() {
   const getOrganizations = () => {
@@ -54,21 +57,23 @@ function App() {
   }, []);
 
   return (
-    <AppContext.Provider value={{ appState, filterMembersByOrganizationId }}>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Clients />}></Route>
+    <ThemeProvider theme={theme}>
+      <AppContext.Provider value={{ appState, filterMembersByOrganizationId }}>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Clients />}></Route>
 
-          <Route path="map" element={<Map />}></Route>
+            <Route path="map" element={<Map />}></Route>
 
-          <Route path="managers" element={<Managers />}></Route>
+            <Route path="managers" element={<Managers />}></Route>
 
-          <Route path="member_form/:memberId" element={<MemberForm />}></Route>
-        </Routes>
+            <Route path="member_form/:memberId" element={<MemberForm />}></Route>
+          </Routes>
 
-        <Toast />
-      </BrowserRouter>
-    </AppContext.Provider>
+          <Toast />
+        </BrowserRouter>
+      </AppContext.Provider>
+    </ThemeProvider>
   );
 }
 

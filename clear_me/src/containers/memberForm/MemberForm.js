@@ -1,16 +1,36 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import styled, { useTheme } from 'styled-components';
 import AppButton from '../../components/appButton/AppButton';
 import BackButton from '../../components/backButton/BackButton';
+import ErrorText from '../../components/errorText/ErrorText';
+import PageWrapper from '../../components/pageWrapper/PageWrapper';
 import { AppContext } from '../../contexts/AppContext';
 import Services from '../../services/Services';
-import './MemberForm.css';
 
 const services = new Services();
 const apiService = services.api;
 
+const Form = styled.form`
+  width: 75%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const Input = styled.input`
+  margin-bottom: 2%;
+`;
+
+const Label = styled.label`
+  font-size: 10px;
+  margin-bottom: 3px;
+`;
+
 export default function MemberForm() {
   const appContext = useContext(AppContext);
+
+  const theme = useTheme();
 
   const navigate = useNavigate();
 
@@ -71,20 +91,24 @@ export default function MemberForm() {
   }, []);
 
   return (
-    <main>
+    <PageWrapper>
       <BackButton />
 
       <h3>{`Member form ${member?.name ? `- ${member?.name}` : ''}`}</h3>
 
-      <form className="member-form">
-        <label>Organization id</label>
-        
-        <input type="text" placeholder="Organization id" value={inputValue} onChange={onInputValueChange} />
+      <Form>
+        <Label>Organization id</Label>
+
+        <Input type="text" placeholder="Organization id" value={inputValue} onChange={onInputValueChange} />
 
         <AppButton onButtonClick={() => onSubmit()} buttonText={'Submit update'} />
-      </form>
+      </Form>
 
-      {<p className="error">{`${!!showError ? "Value can't be empty" : ''}`}</p>}
-    </main>
+      <ErrorText
+        isParagragh={true}
+        text={`${!!showError ? "Value can't be empty" : ''}`}
+        style={theme.fontSizes.small}
+      />
+    </PageWrapper>
   );
 }

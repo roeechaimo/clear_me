@@ -1,8 +1,0 @@
-.nav-wrapper {
-  display: flex;
-  width: 75%;  
-}
-
-table > tbody > tr > td {
-  cursor: pointer;
-}
