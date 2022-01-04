@@ -78,13 +78,13 @@ export default function MemberForm() {
 
   useEffect(() => {
     if (memberId) {
-      apiService.getMemeberDetails(Number(memberId), (res) => {
+      apiService.getMemeberDetails(Number(memberId)).then((res) => {
         if (res) {
           setMember(res);
 
           setInputValue(res?.organization_id);
         }
-      });
+      });      
     }
 
     return () => {};

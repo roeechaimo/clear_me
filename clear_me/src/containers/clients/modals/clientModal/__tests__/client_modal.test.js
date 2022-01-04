@@ -1,4 +1,5 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { createMemoryHistory } from 'history';
 import ClientModal from '../ClientModal';
 
 const client = {
@@ -15,7 +16,9 @@ const client = {
 };
 
 test('renders client modal details properly', () => {
-  render(<ClientModal client={client} onEditMember={() => {}} onModalHide={() => {}} isModalOpen={true} />);
+  const mockFn = jest.fn(() => navigate(`/member_form/${member?.id}`));
+
+  render(<ClientModal client={client} onEditMember={mockFn} onModalHide={() => {}} isModalOpen={true} />);
 
   const clientName = screen.getByText(/Schulist - Lind/i);
   const clientAddress = screen.getByText(/714 Josefa Inlet/i);
@@ -32,4 +35,22 @@ test('renders client modal details properly', () => {
   expect(clientState.innerHTML).toEqual('MS');
   expect(clientHeadCount.innerHTML).toEqual('69');
   expect(clientMembers.innerHTML).toEqual('Jace Bartoletti');
+});
+
+test('navigate to member page properly', () => {
+  let history = createMemoryHistory();
+
+  const mockFn = jest.fn(() => {
+    const route = `/member_form/${client?.members[0]?.id}`;
+    history.push(route);
+
+    expect(history.location.pathname).toEqual(`/member_form/1`);
+  });
+
+  render(<ClientModal client={client} onEditMember={mockFn} onModalHide={() => {}} isModalOpen={true} />);
+
+  const memberEditButton = screen.getByText(/edit/i);
+  fireEvent.click(memberEditButton);
+
+  expect(mockFn).toHaveBeenCalledTimes(1);
 });

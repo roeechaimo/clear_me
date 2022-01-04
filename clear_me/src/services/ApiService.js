@@ -51,17 +51,18 @@ export default class ApiService {
       );
   }
 
-  getMemeberDetails(memberId, callback) {
-    fetch(`${this.#baseUrl}members/${memberId}`)
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          return callback(result);
-        },
-        (error) => {
-          console.log(error);
-        }
+  async getMemeberDetails(memberId) {
+    try {
+      const response = await fetch(
+        `${process.env.NODE_ENV === 'test' ? API.BASE_URL : this.#baseUrl}members/${memberId}`
       );
+
+      const result = await response.json();
+
+      return result;
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   async getZipCodes(data = {}) {
@@ -78,15 +79,22 @@ export default class ApiService {
   }
 
   async updateMember(memberId, data = {}) {
-    const response = await fetch(`${this.#baseUrl}members/${memberId}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      referrerPolicy: 'no-referrer',
-      body: JSON.stringify(data),
-    });
+    try {
+      const response = await fetch(
+        `${process.env.NODE_ENV === 'test' ? API.BASE_URL : this.#baseUrl}members/${memberId}`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          referrerPolicy: 'no-referrer',
+          body: JSON.stringify(data),
+        }
+      );
 
-    return response.json();
+      return response.json();
+    } catch (e) {
+      console.log(e);
+    }
   }
 }
