@@ -116,6 +116,7 @@ function ClientModal(props) {
       onRequestClose={() => onHide()}
       style={customStyles}
       className="app-modal"
+      ariaHideApp={process.env.NODE_ENV !== 'test' ? true : false}
     >
       <div>
         <CloseButtonWrapper>
@@ -140,6 +141,7 @@ function ClientModal(props) {
   );
 }
 
-ReactModal.setAppElement('#root');
+if (process.env.NODE_ENV !== 'test') ReactModal.setAppElement('#root');
+// ReactModal.setAppElement('#root');
 
 export default ClientModal;

@@ -21,7 +21,7 @@ export default function Clients() {
   const [isClientModalOpen, setIsClientModalOpen] = useState(false);
 
   const onClientClick = (client) => {
-    return apiService.getOrganizationDetails(client?.id, (result) => onOrganizationDetailsSuccess(result));
+    return apiService.getOrganizationDetails(client?.id).then((res) => onOrganizationDetailsSuccess(res));
   };
 
   const onOrganizationDetailsSuccess = (client) => {

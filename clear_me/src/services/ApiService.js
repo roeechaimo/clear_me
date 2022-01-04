@@ -1,7 +1,15 @@
+import { API } from '../constants/api.constants';
+
 export default class ApiService {
-  #baseUrl = 'https://61a689cf8395690017be9324.mockapi.io/api/v1/';
-  #zipCodeApiKey = 'PevE06UaIpAoGaA65tO9z0F2SdW8Vwk1';
-  #zipCodesUrl = `https://www.mapquestapi.com/geocoding/v1/batch?key=${this.#zipCodeApiKey}`;
+  #baseUrl;
+  #zipCodeApiKey;
+  #zipCodesUrl;
+
+  constructor() {
+    this.#baseUrl = API.BASE_URL;
+    this.#zipCodeApiKey = API.ZIP_CODE_API_KEY;
+    this.#zipCodesUrl = `${API.ZIP_CODE_URL}${this.#zipCodeApiKey}`;
+  }
 
   getOrganizations(callback) {
     fetch(`${this.#baseUrl}organization`)
@@ -16,17 +24,18 @@ export default class ApiService {
       );
   }
 
-  getOrganizationDetails(organizationId, callback) {
-    fetch(`${this.#baseUrl}organization/${organizationId}`)
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          return callback(result);
-        },
-        (error) => {
-          console.log(error);
-        }
+  async getOrganizationDetails(organizationId) {
+    try {
+      const response = await fetch(
+        `${process.env.NODE_ENV === 'test' ? API.BASE_URL : this.#baseUrl}organization/${organizationId}`
       );
+
+      const result = await response.json();
+
+      return result;
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   getMemebers(callback) {

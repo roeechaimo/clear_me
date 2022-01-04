@@ -1,18 +1,19 @@
 import { useCallback, useEffect, useState } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { ThemeProvider } from 'styled-components';
+import Toast from './components/toast/Toast';
 import Clients from './containers/clients/Clinets';
 import Managers from './containers/managers/Managers';
 import Map from './containers/map/Map';
 import MemberForm from './containers/memberForm/MemberForm';
 import { AppContext } from './contexts/AppContext';
 import Services from './services/Services';
-import { toast } from 'react-toastify';
-import Toast from './components/toast/Toast';
 import THEME from './styles/theme';
-import {ThemeProvider} from 'styled-components';
 
 const services = new Services();
 const apiService = services.api;
+const appService = services.app;
 
 const theme = THEME;
 
@@ -30,9 +31,7 @@ function App() {
   });
 
   const filterMembersByOrganizationId = (organizationId) => {
-    return appState?.data?.members?.filter((member) => {
-      return member?.organization_id?.replace('organization_id ', '') === organizationId;
-    });
+    return appService.filterMembersByOrganizationId(appState?.data?.members, organizationId);
   };
 
   const getMembers = useCallback(
