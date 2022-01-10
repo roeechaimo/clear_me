@@ -10,7 +10,6 @@ const StyledLoader = styled.div`
   align-items: center;
   align-self: center;
   margin: 50px;
-  position: absolute;
   zindex: 1000;
 `;
 

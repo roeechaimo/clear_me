@@ -31,6 +31,7 @@ export default function Map() {
   const [coordinates, setCoordinates] = useState({
     valid: [],
     invalid: [],
+    isLoaded: false,
   });
 
   const getOrganizationsCoordinates = () => {
@@ -57,6 +58,7 @@ export default function Map() {
       setCoordinates({
         valid: validOrganizations,
         invalid: [...invalidLocations, ...invalid],
+        isLoaded: true,
       });
     });
   };
@@ -115,29 +117,33 @@ export default function Map() {
 
       <h3>Map</h3>
 
-      {!coordinates?.valid?.length && !coordinates?.invalid?.length && <Loader />}
+      {!coordinates?.isLoaded ? (
+        <Loader />
+      ) : (
+        <>
+          {!!coordinates?.invalid?.length && (
+            <Wrapper>
+              <ErrorText isParagragh={true} text={"Couldn't find location for:"} />
 
-      {!!coordinates?.invalid?.length && (
-        <Wrapper>
-          <ErrorText isParagragh={true} text={"Couldn't find location for:"} />
+              {coordinates?.invalid?.map((org, index) => renderInvalidOrg(org, index))}
+            </Wrapper>
+          )}
 
-          {coordinates?.invalid?.map((org, index) => renderInvalidOrg(org, index))}
-        </Wrapper>
+          <Wrapper>
+            <ComposableMap>
+              <ZoomableGroup center={usCenter} zoom={3}>
+                <Geographies geography={geoUrl}>
+                  {({ geographies }) =>
+                    geographies.map((geo) => <Geography key={geo.rsmKey} geography={geo} fill="#DDD" stroke="#FFF" />)
+                  }
+                </Geographies>
+
+                {coordinates?.valid?.map((item, index) => renderMarker(item, index))}
+              </ZoomableGroup>
+            </ComposableMap>
+          </Wrapper>
+        </>
       )}
-
-      <Wrapper>
-        <ComposableMap>
-          <ZoomableGroup center={usCenter} zoom={3}>
-            <Geographies geography={geoUrl}>
-              {({ geographies }) =>
-                geographies.map((geo) => <Geography key={geo.rsmKey} geography={geo} fill="#DDD" stroke="#FFF" />)
-              }
-            </Geographies>
-
-            {coordinates?.valid?.map((item, index) => renderMarker(item, index))}
-          </ZoomableGroup>
-        </ComposableMap>
-      </Wrapper>
     </PageWrapper>
   );
 }
