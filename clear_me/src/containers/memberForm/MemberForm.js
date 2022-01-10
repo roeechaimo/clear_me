@@ -5,6 +5,7 @@ import styled, { useTheme } from 'styled-components';
 import AppButton from '../../components/appButton/AppButton';
 import BackButton from '../../components/backButton/BackButton';
 import ErrorText from '../../components/errorText/ErrorText';
+import Loader from '../../components/loader/Loader';
 import PageWrapper from '../../components/pageWrapper/PageWrapper';
 import { AppContext } from '../../contexts/AppContext';
 import Services from '../../services/Services';
@@ -87,21 +88,27 @@ export default function MemberForm() {
     <PageWrapper>
       <BackButton />
 
-      <h3>{`Member form ${member?.name ? `- ${member?.name}` : ''}`}</h3>
+      {!member ? (
+        <Loader />
+      ) : (
+        <>
+          {' '}
+          <h3>{`Member form ${member?.name ? `- ${member?.name}` : ''}`}</h3>
+          <Form onSubmit={handleSubmit(onSubmit)}>
+            <Label>Organization id</Label>
 
-      <Form onSubmit={handleSubmit(onSubmit)}>
-        <Label>Organization id</Label>
+            <Input {...rest} defaultValue={member?.organization_id} onChange={onInputValueChange} />
 
-        <Input {...rest} defaultValue={member?.organization_id} onChange={onInputValueChange} />
+            <ErrorText
+              isParagragh={true}
+              text={`${errors?.organizationId ? "Value can't be empty" : '\0'}`}
+              style={theme.fontSizes.small}
+            />
 
-        <ErrorText
-          isParagragh={true}
-          text={`${errors?.organizationId ? "Value can't be empty" : '\0'}`}
-          style={theme.fontSizes.small}
-        />
-
-        <AppButton onButtonClick={handleSubmit(onSubmit)} buttonText={'Submit update'} />
-      </Form>
+            <AppButton onButtonClick={handleSubmit(onSubmit)} buttonText={'Submit update'} />
+          </Form>
+        </>
+      )}
     </PageWrapper>
   );
 }

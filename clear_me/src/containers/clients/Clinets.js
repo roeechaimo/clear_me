@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AppButton from '../../components/appButton/AppButton';
+import Loader from '../../components/loader/Loader';
 import PageWrapper from '../../components/pageWrapper/PageWrapper';
 import Table from '../../components/table/Table';
 import { AppContext } from '../../contexts/AppContext';
@@ -14,6 +15,7 @@ const apiService = services.api;
 
 export default function Clients() {
   const appContext = useContext(AppContext);
+  const { isLoading } = appContext?.appState;
 
   const navigate = useNavigate();
 
@@ -67,23 +69,27 @@ export default function Clients() {
 
       <h3>Organizations</h3>
 
-      <Table cursor={'pointer'}>
-        <thead>
-          <tr>
-            <td>Name</td>
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <Table cursor={'pointer'}>
+          <thead>
+            <tr>
+              <td>Name</td>
 
-            <td>Headcount</td>
+              <td>Headcount</td>
 
-            <td>Public</td>
-          </tr>
-        </thead>
+              <td>Public</td>
+            </tr>
+          </thead>
 
-        <tbody>
-          {appContext?.appState?.data?.organizations?.map((client) => (
-            <Client key={client?.id} client={client} onClientClick={(client) => onClientClick(client)} />
-          ))}
-        </tbody>
-      </Table>
+          <tbody>
+            {appContext?.appState?.data?.organizations?.map((client) => (
+              <Client key={client?.id} client={client} onClientClick={(client) => onClientClick(client)} />
+            ))}
+          </tbody>
+        </Table>
+      )}
     </PageWrapper>
   );
 }

@@ -6,6 +6,7 @@ import { AppContext } from '../../contexts/AppContext';
 import Services from '../../services/Services';
 import ErrorText from '../../components/errorText/ErrorText';
 import styled from 'styled-components';
+import Loader from '../../components/loader/Loader';
 
 const geoUrl = 'https://raw.githubusercontent.com/zcreativelabs/react-simple-maps/master/topojson-maps/world-110m.json';
 
@@ -23,7 +24,7 @@ const MarkerText = styled.text`
   font-size: 2px;
 `;
 
-const ERROR_SPAN = { 'font-size': '10px' };
+const ERROR_SPAN = { fontSize: '10px' };
 
 export default function Map() {
   const appContext = useContext(AppContext);
@@ -113,6 +114,8 @@ export default function Map() {
       <BackButton />
 
       <h3>Map</h3>
+
+      {!coordinates?.valid?.length && !coordinates?.invalid?.length && <Loader />}
 
       {!!coordinates?.invalid?.length && (
         <Wrapper>

@@ -19,6 +19,11 @@ const theme = THEME;
 
 function App() {
   const getOrganizations = () => {
+    setAppState({
+      ...appState,
+      isLoading: true,
+    });
+
     apiService.getOrganizations((result) => getMembers(result));
   };
 
@@ -28,6 +33,7 @@ function App() {
     showToast: (message) => {
       toast(message);
     },
+    isLoading: false,
   });
 
   const filterMembersByOrganizationId = (organizationId) => {
@@ -43,6 +49,7 @@ function App() {
             organizations,
             members: result,
           },
+          isLoading: false,
         })
       );
     },

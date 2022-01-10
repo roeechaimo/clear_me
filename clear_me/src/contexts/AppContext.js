@@ -9,4 +9,5 @@ export const AppContext = React.createContext({
     getOrganizationsAndMembers: () => {},
   },
   showToast: () => {},
+  isLoading: false,
 });
