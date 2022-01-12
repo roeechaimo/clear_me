@@ -8,10 +8,7 @@ import ErrorText from '../../components/errorText/ErrorText';
 import Loader from '../../components/loader/Loader';
 import PageWrapper from '../../components/pageWrapper/PageWrapper';
 import { AppContext } from '../../contexts/AppContext';
-import Services from '../../services/Services';
-
-const services = new Services();
-const apiService = services.api;
+import useMember from '../../hooks/useMember';
 
 const Form = styled.form`
   width: 75%;
@@ -38,14 +35,18 @@ export default function MemberForm() {
 
   const { memberId } = useParams();
 
+  const [submitedValue, setSubmitedValue] = useState(null);
+
+  const { error: errorMemberDetails, data: member } = useMember(memberId);
+  const { error: errorMemberUpdate, refetch: updateMember } = useMember(memberId, submitedValue);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm();
   const { onChange, ...rest } = register('organizationId', { required: true });
-
-  const [member, setMember] = useState(null);
 
   const onSubmit = (data) => {
     if (data?.organizationId) {
@@ -54,17 +55,7 @@ export default function MemberForm() {
         return typeof showToast === 'function' && showToast('The value is the same initial value..');
       }
 
-      return apiService.updateMember(member?.id, { organization_id: data?.organizationId }).then((res) => {
-        if (res) {
-          const { getOrganizationsAndMembers } = appContext?.appState?.api;
-
-          typeof showToast === 'function' && showToast('Member updated!');
-
-          typeof getOrganizationsAndMembers === 'function' && getOrganizationsAndMembers();
-
-          return navigate('/');
-        }
-      });
+      return setSubmitedValue({ organization_id: data?.organizationId });
     }
   };
 
@@ -73,16 +64,28 @@ export default function MemberForm() {
   };
 
   useEffect(() => {
-    if (memberId) {
-      apiService.getMemeberDetails(Number(memberId)).then((res) => {
-        if (res) {
-          setMember(res);
+    if (submitedValue) {
+      const { showToast } = appContext?.appState;
+
+      updateMember().then((res) => {
+        if (res?.data) {
+          typeof showToast === 'function' && showToast('Member updated!');
+
+          return navigate('/');
         }
       });
     }
 
     return () => {};
-  }, []);
+  }, [submitedValue]);
+
+  useEffect(() => {
+    if (member) {
+      setValue('organizationId', member?.organization_id);
+    }
+
+    return () => {};
+  }, [member]);
 
   return (
     <PageWrapper>
@@ -97,7 +100,7 @@ export default function MemberForm() {
           <Form onSubmit={handleSubmit(onSubmit)}>
             <Label>Organization id</Label>
 
-            <Input {...rest} defaultValue={member?.organization_id} onChange={onInputValueChange} />
+            <Input {...rest} onChange={onInputValueChange} defaultValue={member?.organization_id} />
 
             <ErrorText
               isParagragh={true}
