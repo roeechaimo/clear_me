@@ -1,17 +1,28 @@
-import React, { useContext, useEffect, useState, useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import BackButton from '../../components/backButton/BackButton';
 import PageWrapper from '../../components/pageWrapper/PageWrapper';
 import Table from '../../components/table/Table';
-import { AppContext } from '../../contexts/AppContext';
+import useMembers from '../../hooks/useMembers';
+import useOrganizations from '../../hooks/useOrganizations';
 import Manager from './components/manager/Manager';
 
 export default function Managers() {
-  const appContext = useContext(AppContext);
+  const {
+    isLoading: isLoadingOrganizations,
+    isFetching: isFetchingOrganizations,
+    error: errorOrganizations,
+    data: organizations,
+  } = useOrganizations();
+  const {
+    isLoading: isLoadingMembers,
+    isFetching: isFetchingMembers,
+    error: errorMembers,
+    data: members,
+  } = useMembers();
 
   const [managers, setManagers] = useState([]);
 
   const filterManagers = useCallback(() => {
-    const { organizations, members } = appContext?.appState?.data;
     const managers = members
       ?.filter((member) => member?.title?.toLowerCase() === 'manager')
       ?.map((manager) => {
@@ -27,13 +38,13 @@ export default function Managers() {
       });
 
     setManagers(managers);
-  }, [appContext?.appState?.data?.members]);
+  }, [members]);
 
   useEffect(() => {
     filterManagers();
 
     return () => {};
-  }, [appContext?.appState?.data?.members]);
+  }, [members]);
 
   return (
     <PageWrapper>
