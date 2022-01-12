@@ -9,11 +9,7 @@ import Managers from './containers/managers/Managers';
 import Map from './containers/map/Map';
 import MemberForm from './containers/memberForm/MemberForm';
 import { AppContext } from './contexts/AppContext';
-import Services from './services/Services';
 import THEME from './styles/theme';
-
-const services = new Services();
-const appService = services.app;
 
 const theme = THEME;
 
@@ -26,15 +22,9 @@ function App() {
     },
   });
 
-  const filterMembersByOrganizationId = (organizationId) => {
-    const members = queryClient.getQueryData(['members', 1]);
-
-    return appService.filterMembersByOrganizationId(members, organizationId);
-  };
-
   return (
     <ThemeProvider theme={theme}>
-      <AppContext.Provider value={{ appState, filterMembersByOrganizationId }}>
+      <AppContext.Provider value={{ appState }}>
         <QueryClientProvider client={queryClient}>
           <BrowserRouter>
             <Routes>

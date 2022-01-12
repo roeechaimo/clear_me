@@ -1,19 +1,23 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import AppButton from '../../components/appButton/AppButton';
 import Loader from '../../components/loader/Loader';
 import PageWrapper from '../../components/pageWrapper/PageWrapper';
 import Table from '../../components/table/Table';
-import { AppContext } from '../../contexts/AppContext';
 import useMembers from '../../hooks/useMembers';
 import useOrganization from '../../hooks/useOrganization';
 import useOrganizations from '../../hooks/useOrganizations';
+import Services from '../../services/Services';
 import NavWrapper from '../../styles/navWrapper/NavWrapper';
 import Client from './components/client/Client';
 import ClientModal from './modals/clientModal/ClientModal';
 
+const services = new Services();
+const appService = services.app;
+
 export default function Clients() {
-  const appContext = useContext(AppContext);
+  const queryClient = useQueryClient();
 
   const navigate = useNavigate();
 
@@ -67,7 +71,9 @@ export default function Clients() {
   };
 
   const filterMembersByOrganizationId = (organizationId) => {
-    return appContext?.filterMembersByOrganizationId(organizationId);
+    const members = queryClient.getQueryData(['members', 1]);
+
+    return appService.filterMembersByOrganizationId(members, organizationId);    
   };
 
   useEffect(() => {
