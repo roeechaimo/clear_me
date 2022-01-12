@@ -1,8 +1,7 @@
-import React, { useContext } from 'react';
-import { AppContext } from '../../contexts/AppContext';
-import styled, { useTheme } from 'styled-components';
+import React from 'react';
 import { TailSpin } from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+import styled, { useTheme } from 'styled-components';
 
 const StyledLoader = styled.div`
   display: flex;
@@ -10,21 +9,27 @@ const StyledLoader = styled.div`
   align-items: center;
   align-self: center;
   margin: 50px;
-  zindex: 1000;
+  z-index: 1000;
+  ${(props) =>
+    props?.isPageLoader &&
+    `position: absolute;
+    background-color: ${props?.theme?.colors?.secondary};
+    padding: 5px;
+    border-radius: 5px;
+    `};
+  ${(props) => props?.style};
 `;
 
-export default function Loader() {
-  const appContext = useContext(AppContext);
+export default function Loader({ style = {}, isPageLoader = false }) {
   const theme = useTheme();
-  const { isLoading } = appContext?.appState;
 
   return (
     <>
-      {isLoading && (
-        <StyledLoader>
+      {
+        <StyledLoader style={style} isPageLoader={isPageLoader}>
           <TailSpin arialLabel="loading-indicator" height={50} width={50} color={theme.colors.primary} />
         </StyledLoader>
-      )}
+      }
     </>
   );
 }

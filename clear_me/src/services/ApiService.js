@@ -11,24 +11,9 @@ export default class ApiService {
     this.#zipCodesUrl = `${API.ZIP_CODE_URL}${this.#zipCodeApiKey}`;
   }
 
-  getOrganizations(callback) {
-    fetch(`${this.#baseUrl}organization`)
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          return callback(result);
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-  }
-
-  async getOrganizationDetails(organizationId) {
+  async getOrganizations() {
     try {
-      const response = await fetch(
-        `${process.env.NODE_ENV === 'test' ? API.BASE_URL : this.#baseUrl}organization/${organizationId}`
-      );
+      const response = await fetch(`${process.env.NODE_ENV === 'test' ? API.BASE_URL : this.#baseUrl}organization`);
 
       const result = await response.json();
 
@@ -38,17 +23,34 @@ export default class ApiService {
     }
   }
 
-  getMemebers(callback) {
-    fetch(`${this.#baseUrl}members`)
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          return callback(result);
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
+  async getOrganizationDetails(organizationId) {
+    try {
+      if (organizationId) {
+        const response = await fetch(
+          `${process.env.NODE_ENV === 'test' ? API.BASE_URL : this.#baseUrl}organization/${organizationId}`
+        );
+
+        const result = await response.json();
+
+        return result;
+      }
+
+      return null;
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  async getMembers() {
+    try {
+      const response = await fetch(`${process.env.NODE_ENV === 'test' ? API.BASE_URL : this.#baseUrl}members`);
+
+      const result = await response.json();
+
+      return result;
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   async getMemeberDetails(memberId) {

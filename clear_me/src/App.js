@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useState } from 'react';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { ThemeProvider } from 'styled-components';
@@ -12,72 +13,43 @@ import Services from './services/Services';
 import THEME from './styles/theme';
 
 const services = new Services();
-const apiService = services.api;
 const appService = services.app;
 
 const theme = THEME;
 
 function App() {
-  const getOrganizations = () => {
-    setAppState({
-      ...appState,
-      isLoading: true,
-    });
-
-    apiService.getOrganizations((result) => getMembers(result));
-  };
+  const queryClient = new QueryClient();
 
   const [appState, setAppState] = useState({
-    data: { members: [], organizations: [] },
-    api: { getOrganizationsAndMembers: getOrganizations },
     showToast: (message) => {
       toast(message);
     },
-    isLoading: false,
   });
 
   const filterMembersByOrganizationId = (organizationId) => {
-    return appService.filterMembersByOrganizationId(appState?.data?.members, organizationId);
+    const members = queryClient.getQueryData(['members', 1]);
+
+    return appService.filterMembersByOrganizationId(members, organizationId);
   };
-
-  const getMembers = useCallback(
-    (organizations) => {
-      apiService.getMemebers((result) =>
-        setAppState({
-          ...appState,
-          data: {
-            organizations,
-            members: result,
-          },
-          isLoading: false,
-        })
-      );
-    },
-    [appState]
-  );
-
-  useEffect(() => {
-    getOrganizations();
-
-    return () => {};
-  }, []);
 
   return (
     <ThemeProvider theme={theme}>
       <AppContext.Provider value={{ appState, filterMembersByOrganizationId }}>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Clients />}></Route>
+        <QueryClientProvider client={queryClient}>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Clients />}></Route>
 
-            <Route path="map" element={<Map />}></Route>
+              <Route path="map" element={<Map />}></Route>
 
-            <Route path="managers" element={<Managers />}></Route>
+              <Route path="managers" element={<Managers />}></Route>
 
-            <Route path="member_form/:memberId" element={<MemberForm />}></Route>
-          </Routes>
+              <Route path="member_form/:memberId" element={<MemberForm />}></Route>
+            </Routes>
 
-          <Toast />
-        </BrowserRouter>
+            <Toast />
+          </BrowserRouter>
+        </QueryClientProvider>
       </AppContext.Provider>
     </ThemeProvider>
   );
