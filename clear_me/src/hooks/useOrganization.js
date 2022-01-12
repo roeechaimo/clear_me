@@ -4,9 +4,9 @@ import { useQuery } from 'react-query';
 const services = new Services();
 const apiService = services.api;
 
-export default function useOrganization(organizationId, isEnabled) {
+export default function useOrganization(organizationId) {
   return useQuery(['organization', 1], () => apiService.getOrganizationDetails(organizationId), {
-    enabled: isEnabled,
+    enabled: !!organizationId,
     refetchOnWindowFocus: false,
   });
 }

@@ -1,12 +1,12 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ComposableMap, Geographies, Geography, Marker, ZoomableGroup } from 'react-simple-maps';
-import BackButton from '../../components/backButton/BackButton';
-import PageWrapper from '../../components/pageWrapper/PageWrapper';
-import { AppContext } from '../../contexts/AppContext';
-import Services from '../../services/Services';
-import ErrorText from '../../components/errorText/ErrorText';
 import styled from 'styled-components';
+import BackButton from '../../components/backButton/BackButton';
+import ErrorText from '../../components/errorText/ErrorText';
 import Loader from '../../components/loader/Loader';
+import PageWrapper from '../../components/pageWrapper/PageWrapper';
+import useOrganizations from '../../hooks/useOrganizations';
+import Services from '../../services/Services';
 
 const geoUrl = 'https://raw.githubusercontent.com/zcreativelabs/react-simple-maps/master/topojson-maps/world-110m.json';
 
@@ -27,17 +27,22 @@ const MarkerText = styled.text`
 const ERROR_SPAN = { fontSize: '10px' };
 
 export default function Map() {
-  const appContext = useContext(AppContext);
   const [coordinates, setCoordinates] = useState({
     valid: [],
     invalid: [],
     isLoaded: false,
   });
 
+  const {
+    isLoading: isLoadingOrganizations,
+    isFetching: isFetchingOrganizations,
+    error: errorOrganizations,
+    data: organizations,
+  } = useOrganizations();
+
   const getOrganizationsCoordinates = () => {
     let locations = [];
     let invalid = [];
-    const organizations = appContext?.appState?.data?.organizations;
     organizations?.forEach((org) => {
       if (org?.city && org?.state && org?.address_1) {
         let location = { city: org?.city, state: org?.state, address: org?.address_1 };
@@ -109,7 +114,7 @@ export default function Map() {
     getOrganizationsCoordinates();
 
     return () => {};
-  }, [appContext?.appState?.data?.organizations]);
+  }, [organizations]);
 
   return (
     <PageWrapper>

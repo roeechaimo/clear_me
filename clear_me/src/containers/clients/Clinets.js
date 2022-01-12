@@ -38,7 +38,7 @@ export default function Clients() {
     error: errorOrganization,
     data: organizationDetails,
     refetch,
-  } = useOrganization(clickedClient?.id, !!clickedClient?.id);
+  } = useOrganization(clickedClient?.id);
 
   const onClientClick = (client) => {
     setClickedClient(client);
