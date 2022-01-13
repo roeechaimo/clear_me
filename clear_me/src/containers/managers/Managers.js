@@ -38,13 +38,13 @@ export default function Managers() {
       });
 
     setManagers(managers);
-  }, [members]);
+  }, [members, organizations]);
 
   useEffect(() => {
     filterManagers();
 
     return () => {};
-  }, [members]);
+  }, [members, filterManagers]);
 
   return (
     <PageWrapper>

@@ -1,7 +1,5 @@
-import { useState } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import { ThemeProvider } from 'styled-components';
 import Toast from './components/toast/Toast';
 import Clients from './containers/clients/Clinets';
@@ -9,22 +7,20 @@ import Managers from './containers/managers/Managers';
 import Map from './containers/map/Map';
 import MemberForm from './containers/memberForm/MemberForm';
 import { AppContext } from './contexts/AppContext';
+import Services from './services/Services';
 import THEME from './styles/theme';
 
 const theme = THEME;
 
+const services = new Services();
+const appService = services.app;
+
 function App() {
   const queryClient = new QueryClient();
 
-  const [appState, setAppState] = useState({
-    showToast: (message) => {
-      toast(message);
-    },
-  });
-
   return (
     <ThemeProvider theme={theme}>
-      <AppContext.Provider value={{ appState }}>
+      <AppContext.Provider value={{ showToast: appService?.showToast }}>
         <QueryClientProvider client={queryClient}>
           <BrowserRouter>
             <Routes>

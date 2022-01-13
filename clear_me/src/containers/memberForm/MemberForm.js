@@ -50,7 +50,7 @@ export default function MemberForm() {
 
   const onSubmit = (data) => {
     if (data?.organizationId) {
-      const { showToast } = appContext?.appState;
+      const { showToast } = appContext;
       if (data?.organizationId === member?.organization_id) {
         return typeof showToast === 'function' && showToast('The value is the same initial value..');
       }
@@ -65,7 +65,7 @@ export default function MemberForm() {
 
   useEffect(() => {
     if (submitedValue) {
-      const { showToast } = appContext?.appState;
+      const { showToast } = appContext;
 
       updateMember().then((res) => {
         if (res?.data) {
